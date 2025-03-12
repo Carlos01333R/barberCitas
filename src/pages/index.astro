@@ -1,0 +1,19 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header";
+import HeroCarousel from "../components/HeroCarousel";
+import AppointmentSection from "../components/AppointmentSection";
+import GallerySection from "../components/GallerySection";
+import ReviewsSection from "../components/ReviewsSection";
+import Footer from "../components/Footer";
+---
+
+<Layout title="Barbershop - Home">
+  <Header client:load />
+  <main>
+    <AppointmentSection client:load />
+    <GallerySection client:load />
+    <ReviewsSection client:load />
+  </main>
+  <Footer />
+</Layout>

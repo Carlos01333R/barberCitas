@@ -1,0 +1,15 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header";
+import AppointmentForm from "../components/AppointmentForm";
+import Footer from "../components/Footer";
+---
+
+<Layout title="Book an Appointment">
+  <Header client:load />
+  <main class="container mx-auto px-4 py-12">
+    <h1 class="text-4xl font-bold text-center mb-8">Book Your Appointment</h1>
+    <AppointmentForm client:load />
+  </main>
+  <Footer />
+</Layout>
