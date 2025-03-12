@@ -8,15 +8,14 @@ const reviews = [
     avatar: "modelo.png",
     rating: 5,
     comment:
-      "Best haircut I've ever had! The barber was professional and friendly.",
+      "¡El mejor corte de pelo que he tenido! El peluquero fue profesional y amable.",
   },
   {
     id: 2,
     name: "Mike Smith",
     avatar: "modelo.png",
     rating: 5,
-    comment:
-      "Great atmosphere and excellent service. Will definitely come back!",
+    comment: "Gran ambiente y excelente servicio. ¡Seguro que volveré!",
   },
   {
     id: 3,
@@ -24,7 +23,7 @@ const reviews = [
     avatar: "modelo.png",
     rating: 4,
     comment:
-      "Very satisfied with my haircut. The staff was attentive and skilled.",
+      "Muy satisfecha con mi corte de pelo. El personal fue atento y competente.",
   },
 ];
 
@@ -33,7 +32,7 @@ export default function ReviewsSection() {
     <section id="reviews" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-12">
-          What Our Clients Say
+          Lo que dicen nuestros clientes
         </h2>
         <div className="grid md:grid-cols-3 gap-6">
           {reviews.map((review) => (

@@ -10,19 +10,19 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-white pt-12 pb-6">
+    <footer className="bg-gray-900 text-white pt-12 pb-6 ">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
-            <div className="flex items-center mb-4">
+            <div className="flex justify-center  md:justify-start items-center mb-4">
               <Scissors className="mr-2" />
-              <span className="font-bold text-xl">BarberShop</span>
+              <span className="font-bold text-xl">Peluquería</span>
             </div>
-            <p className="text-gray-400 mb-4">
-              Premium barbershop services with a focus on quality and customer
-              satisfaction.
+            <p className="text-gray-400 mb-4 text-center md:text-start">
+              Servicios de barbería premium con enfoque en la calidad y
+              satisfacción del cliente.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 justify-center md:justify-start">
               <a
                 href="#"
                 className="text-white hover:text-blue-400 transition-colors"
@@ -44,8 +44,8 @@ export default function Footer() {
             </div>
           </div>
 
-          <div>
-            <h3 className="font-bold text-lg mb-4">Quick Links</h3>
+          <div className="">
+            <h3 className="font-bold text-lg mb-4">Enlaces rápidos</h3>
             <ul className="space-y-2">
               <li>
                 <a
@@ -60,7 +60,7 @@ export default function Footer() {
                   href="#services"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Services
+                  servicios
                 </a>
               </li>
               <li>
@@ -68,7 +68,7 @@ export default function Footer() {
                   href="#gallery"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Gallery
+                  Galeria
                 </a>
               </li>
               <li>
@@ -76,7 +76,7 @@ export default function Footer() {
                   href="#reviews"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Reviews
+                  Reseñas
                 </a>
               </li>
               <li>
@@ -84,21 +84,21 @@ export default function Footer() {
                   href="/appointment"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Book Appointment
+                  Reservar cita
                 </a>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-bold text-lg mb-4">Services</h3>
+            <h3 className="font-bold text-lg mb-4">Servicios</h3>
             <ul className="space-y-2">
               <li>
                 <a
                   href="#"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Haircuts
+                  Cortes de pelo
                 </a>
               </li>
               <li>
@@ -106,7 +106,7 @@ export default function Footer() {
                   href="#"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Beard Trims
+                  Recortes de barba
                 </a>
               </li>
               <li>
@@ -114,7 +114,7 @@ export default function Footer() {
                   href="#"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Hot Towel Shaves
+                  Afeitado con toalla caliente
                 </a>
               </li>
               <li>
@@ -122,7 +122,7 @@ export default function Footer() {
                   href="#"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Hair Styling
+                  Peinado del cabello
                 </a>
               </li>
               <li>
@@ -130,19 +130,19 @@ export default function Footer() {
                   href="#"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Kids Haircuts
+                  Cortes de pelo para niños
                 </a>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-bold text-lg mb-4">Contact Us</h3>
+            <h3 className="font-bold text-lg mb-4">Contáctenoss</h3>
             <ul className="space-y-4">
               <li className="flex items-start">
                 <MapPin className="mr-2 shrink-0 mt-1" size={18} />
                 <span className="text-gray-400">
-                  123 Barber Street, City, Country
+                  123 Barber Street, Ciudad, Campo
                 </span>
               </li>
               <li className="flex items-center">
@@ -152,9 +152,9 @@ export default function Footer() {
               <li className="flex items-start">
                 <Clock className="mr-2 shrink-0 mt-1" size={18} />
                 <div className="text-gray-400">
-                  <div>Mon-Fri: 9am - 8pm</div>
-                  <div>Sat: 9am - 6pm</div>
-                  <div>Sun: 10am - 4pm</div>
+                  <div>Lunes a viernes: 9:00 a 20:00 horas</div>
+                  <div>Sábado: 9:00 a 18:00 horas</div>
+                  <div>Domingo: 10:00 a 16:00 horas</div>
                 </div>
               </li>
             </ul>

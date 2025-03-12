@@ -89,18 +89,18 @@ function SimpleCalendar({ value, onChange }) {
   };
 
   const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
   ];
 
   return (
@@ -119,6 +119,27 @@ function SimpleCalendar({ value, onChange }) {
           >
             <path
               fillRule="evenodd"
+              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
+        <h3 className="font-medium">
+          {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+        </h3>
+        <button
+          type="button"
+          onClick={handleNextMonth}
+          className="p-2 rounded-full hover:bg-gray-100"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
               d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
               clipRule="evenodd"
             />
@@ -126,12 +147,12 @@ function SimpleCalendar({ value, onChange }) {
         </button>
       </div>
       <div className="grid grid-cols-7 gap-1 text-center mb-2">
-        <div className="text-sm font-medium text-gray-500">Su</div>
-        <div className="text-sm font-medium text-gray-500">Mo</div>
-        <div className="text-sm font-medium text-gray-500">Tu</div>
-        <div className="text-sm font-medium text-gray-500">We</div>
-        <div className="text-sm font-medium text-gray-500">Th</div>
-        <div className="text-sm font-medium text-gray-500">Fr</div>
+        <div className="text-sm font-medium text-gray-500">Do</div>
+        <div className="text-sm font-medium text-gray-500">Lu</div>
+        <div className="text-sm font-medium text-gray-500">Ma</div>
+        <div className="text-sm font-medium text-gray-500">Mi</div>
+        <div className="text-sm font-medium text-gray-500">Ju</div>
+        <div className="text-sm font-medium text-gray-500">Vi</div>
         <div className="text-sm font-medium text-gray-500">Sa</div>
       </div>
       <div className="grid grid-cols-7 gap-1">{renderCalendar()}</div>
