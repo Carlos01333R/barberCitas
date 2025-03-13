@@ -1,28 +1,13 @@
+import { formatTimeSlot } from "../lib/timeUtils";
+
 export default function ConfirmationModal({
   isOpen,
   onClose,
   onConfirm,
   appointment,
+  formatDate,
 }) {
   if (!isOpen) return null;
-
-  const formatDate = (dateString) => {
-    const options = {
-      weekday: "long",
-
-      month: "long",
-      day: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("es-ES", options);
-  };
-
-  const formatTimeSlot = (timeSlot) => {
-    const [hour] = timeSlot.split(":");
-    const hourNum = Number.parseInt(hour, 10);
-    const amPm = hourNum >= 12 ? "PM" : "AM";
-    const formattedHour = hourNum % 12 || 12;
-    return `${formattedHour}:00 ${amPm}`;
-  };
 
   return (
     <div className="fixed inset-0 bg-gray-300 bg-opacity-10 flex justify-center items-center px-4">

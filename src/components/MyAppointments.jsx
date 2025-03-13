@@ -3,12 +3,18 @@
 import { useState, useEffect } from "react";
 import { supabase, getCurrentUser } from "../lib/supabaseClient";
 import { Calendar, Clock } from "lucide-react";
+import ConfirmationModal from "./modalCancel";
+
+// Importar las funciones de utilidad de tiempo
+import { formatTimeSlot } from "../lib/timeUtils";
 
 export default function MyAppointments() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -61,10 +67,8 @@ export default function MyAppointments() {
     }
   };
 
-  const cancelAppointment = async (appointmentId) => {
-    if (!confirm("¿Estás seguro de que deseas cancelar esta cita?")) {
-      return;
-    }
+  const handleCancelAppointment = async () => {
+    if (!selectedAppointment) return;
 
     try {
       setLoading(true);
@@ -72,12 +76,15 @@ export default function MyAppointments() {
       const { error } = await supabase
         .from("appointments")
         .delete()
-        .eq("id", appointmentId);
+        .eq("id", selectedAppointment.id);
 
       if (error) throw error;
 
       // Actualizar la lista de citas
-      setAppointments(appointments.filter((app) => app.id !== appointmentId));
+      setAppointments(
+        appointments.filter((app) => app.id !== selectedAppointment.id)
+      );
+      setIsModalOpen(false);
     } catch (error) {
       console.error("Error al cancelar la cita:", error);
       setError(
@@ -95,16 +102,20 @@ export default function MyAppointments() {
       month: "long",
       day: "numeric",
     };
-    return new Date(dateString).toLocaleDateString("es-ES", options);
+
+    // Asegurar que la fecha se interprete en la zona horaria local
+    const localDateString = `${dateString}T00:00:00`;
+    return new Date(localDateString).toLocaleDateString("es-ES", options);
   };
 
-  const formatTimeSlot = (timeSlot) => {
-    const [hour, minute = "00"] = timeSlot.split(":");
-    const hourNum = Number.parseInt(hour, 10);
-    const amPm = hourNum >= 12 ? "PM" : "AM";
-    const formattedHour = hourNum % 12 || 12;
-    return `${formattedHour}:${minute} ${amPm}`;
-  };
+  // Eliminar esta función:
+  // const formatTimeSlot = (timeSlot) => {
+  //   const [hour, minute = "00"] = timeSlot.split(":")
+  //   const hourNum = Number.parseInt(hour, 10)
+  //   const amPm = hourNum >= 12 ? "PM" : "AM"
+  //   const formattedHour = hourNum % 12 || 12
+  //   return `${formattedHour}:${minute} ${amPm}`
+  // }
 
   if (loading && !appointments.length) {
     return (
@@ -188,7 +199,10 @@ export default function MyAppointments() {
                   )}
 
                   <button
-                    onClick={() => cancelAppointment(appointment.id)}
+                    onClick={() => {
+                      setSelectedAppointment(appointment);
+                      setIsModalOpen(true);
+                    }}
                     className="text-red-600 hover:text-red-800 text-sm font-medium"
                   >
                     Cancelar Cita
@@ -199,6 +213,13 @@ export default function MyAppointments() {
           </div>
         ))}
       </div>
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleCancelAppointment}
+        appointment={selectedAppointment}
+        formatDate={formatDate}
+      />
     </div>
   );
 }

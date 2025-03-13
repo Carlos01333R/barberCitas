@@ -2,7 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { supabase, getCurrentUser } from "../lib/supabaseClient";
-import { getCurrentColombiaTime, isToday } from "../lib/timeUtils";
+import {
+  getCurrentColombiaTime,
+  isToday,
+  formatColombiaDateISO,
+} from "../lib/timeUtils";
 
 // Custom calendar component
 function SimpleCalendar({ value, onChange }) {
@@ -200,7 +204,7 @@ export default function AppointmentForm() {
       setLoading(true);
       try {
         // Format date for API call
-        const formattedDate = date.toISOString().split("T")[0];
+        const formattedDate = formatColombiaDateISO(date);
 
         // Get all possible time slots
         const allTimeSlots = generateTimeSlots();
@@ -322,7 +326,7 @@ export default function AppointmentForm() {
 
     setLoading(true);
     try {
-      const formattedDate = date.toISOString().split("T")[0];
+      const formattedDate = formatColombiaDateISO(date);
 
       // Crear objeto de cita
       const appointmentData = {
