@@ -3,15 +3,12 @@
 import { useState, useEffect } from "react";
 import { supabase, getCurrentUser } from "../lib/supabaseClient";
 import { Calendar, Clock } from "lucide-react";
-import ConfirmationModal from "./modalCancel";
 
-export default function MyAppointmentsComponent() {
+export default function MyAppointments() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAppointment, setSelectedAppointment] = useState(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -63,8 +60,11 @@ export default function MyAppointmentsComponent() {
       setLoading(false);
     }
   };
-  const handleCancelAppointment = async () => {
-    if (!selectedAppointment) return;
+
+  const cancelAppointment = async (appointmentId) => {
+    if (!confirm("¿Estás seguro de que deseas cancelar esta cita?")) {
+      return;
+    }
 
     try {
       setLoading(true);
@@ -72,15 +72,12 @@ export default function MyAppointmentsComponent() {
       const { error } = await supabase
         .from("appointments")
         .delete()
-        .eq("id", selectedAppointment.id);
+        .eq("id", appointmentId);
 
       if (error) throw error;
 
       // Actualizar la lista de citas
-      setAppointments(
-        appointments.filter((app) => app.id !== selectedAppointment.id)
-      );
-      setIsModalOpen(false);
+      setAppointments(appointments.filter((app) => app.id !== appointmentId));
     } catch (error) {
       console.error("Error al cancelar la cita:", error);
       setError(
@@ -102,11 +99,11 @@ export default function MyAppointmentsComponent() {
   };
 
   const formatTimeSlot = (timeSlot) => {
-    const [hour] = timeSlot.split(":");
+    const [hour, minute = "00"] = timeSlot.split(":");
     const hourNum = Number.parseInt(hour, 10);
     const amPm = hourNum >= 12 ? "PM" : "AM";
     const formattedHour = hourNum % 12 || 12;
-    return `${formattedHour}:00 ${amPm}`;
+    return `${formattedHour}:${minute} ${amPm}`;
   };
 
   if (loading && !appointments.length) {
@@ -191,10 +188,7 @@ export default function MyAppointmentsComponent() {
                   )}
 
                   <button
-                    onClick={() => {
-                      setSelectedAppointment(appointment);
-                      setIsModalOpen(true);
-                    }}
+                    onClick={() => cancelAppointment(appointment.id)}
                     className="text-red-600 hover:text-red-800 text-sm font-medium"
                   >
                     Cancelar Cita
@@ -205,12 +199,6 @@ export default function MyAppointmentsComponent() {
           </div>
         ))}
       </div>
-      <ConfirmationModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onConfirm={handleCancelAppointment}
-        appointment={selectedAppointment}
-      />
     </div>
   );
 }

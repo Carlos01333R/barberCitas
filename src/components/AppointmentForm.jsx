@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase, getCurrentUser } from "../lib/supabaseClient";
+import { getCurrentColombiaTime, isToday } from "../lib/timeUtils";
 
 // Custom calendar component
 function SimpleCalendar({ value, onChange }) {
@@ -61,7 +62,7 @@ function SimpleCalendar({ value, onChange }) {
         date.getMonth() === value.getMonth() &&
         date.getFullYear() === value.getFullYear();
 
-      const isToday = new Date().toDateString() === date.toDateString();
+      const isTodayDate = new Date().toDateString() === date.toDateString();
       const isPast = date < new Date(new Date().setHours(0, 0, 0, 0));
 
       days.push(
@@ -73,7 +74,7 @@ function SimpleCalendar({ value, onChange }) {
           className={`h-10 w-10 rounded-full flex items-center justify-center ${
             isSelected
               ? "bg-blue-600 text-white"
-              : isToday
+              : isTodayDate
               ? "bg-blue-100 text-blue-600"
               : isPast
               ? "text-gray-400 cursor-not-allowed"
@@ -214,7 +215,37 @@ export default function AppointmentForm() {
 
         // Filter out booked slots
         const bookedTimes = bookedAppointments.map((app) => app.time_slot);
-        const available = allTimeSlots.filter(
+
+        // Filter out past time slots for today
+        let available = allTimeSlots;
+
+        if (isToday(date)) {
+          // Obtener la hora actual en Colombia
+          const colombiaTime = getCurrentColombiaTime();
+
+          console.log(
+            `Hora Colombia: ${colombiaTime.hours}:${colombiaTime.minutes}`
+          );
+
+          // Filtrar las horas que ya han pasado
+          available = allTimeSlots.filter((slot) => {
+            const [slotHour, slotMinute] = slot.value.split(":").map(Number);
+
+            // Si la hora es mayor, está disponible
+            if (slotHour > colombiaTime.hours) return true;
+
+            // Si es la misma hora, verificar los minutos
+            if (slotHour === colombiaTime.hours) {
+              return slotMinute > colombiaTime.minutes;
+            }
+
+            // Si la hora es menor, no está disponible
+            return false;
+          });
+        }
+
+        // Filtrar las horas ya reservadas
+        available = available.filter(
           (slot) => !bookedTimes.includes(slot.value)
         );
 
@@ -252,16 +283,23 @@ export default function AppointmentForm() {
     }
   }, [selectedTime]);
 
-  // Generate time slots from 9 AM to 6 PM
+  // Generate time slots with 20-minute intervals from 9 AM to 6 PM
   const generateTimeSlots = () => {
     const slots = [];
     for (let hour = 9; hour <= 18; hour++) {
-      const formattedHour = hour % 12 || 12;
-      const amPm = hour < 12 ? "AM" : "PM";
-      slots.push({
-        label: `${formattedHour}:00 ${amPm}`,
-        value: `${hour}:00`,
-      });
+      for (let minute = 0; minute < 60; minute += 20) {
+        // Skip 6:20 PM and 6:40 PM
+        if (hour === 18 && minute > 0) continue;
+
+        const formattedHour = hour % 12 || 12;
+        const amPm = hour < 12 ? "AM" : "PM";
+        const formattedMinute = minute.toString().padStart(2, "0");
+
+        slots.push({
+          label: `${formattedHour}:${formattedMinute} ${amPm}`,
+          value: `${hour}:${formattedMinute}`,
+        });
+      }
     }
     return slots;
   };
